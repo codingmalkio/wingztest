@@ -15,7 +15,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ridehail1",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCq0NdAPv9_6qSTuDSutL8WLNdsC-1TfEw"
+      }
     },
     "android": {
       "adaptiveIcon": {
