@@ -2,21 +2,28 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import MapView, { AnimatedRegion, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
+import { useEffect, useState } from 'react';
 
 export function HomeScreen ({ navigation }) {
+  const [markers, setMarkers] = useState([])
+
   const defaultRegion = {
     latitude: 7.086313,
     latitudeDelta: 0.122311,
     longitude: 125.612855,
     longitudeDelta: 0.066947
   }
-
-  const markers = [
-    { id: 1, coordinate: { latitude: 7.086313, longitude: 125.612855 }, title: 'Davao City', description: 'City of Royalties' },
-    { id: 2, coordinate: { latitude: 7.0667509868259515, longitude: 125.59637573846157 }, title: 'Davao City', description: 'City of Royalties' },
-    { id: 3, coordinate: { latitude: 7.065347826608068, longitude: 125.60200927325728 }, title: 'Davao City', description: 'City of Royalties' },
-  ]
+  // fetch json from localhost:3000/
+  useEffect(() => {
+    fetch('http://192.168.13:3000/')
+      .then(response => response.json())
+      .then(data => {
+        console.log('new markers',data)
+        setMarkers(data)
+      }).catch(err => {
+        console.log(err)
+      })
+  }, [])
 
   return (
     <View style={styles.container}>
