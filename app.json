@@ -6,6 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "extra": {
+      "OPENROUTE_APIKEY": "5b3ce3597851110001cf624821833e580ab4438e8333fe516e98ef31"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

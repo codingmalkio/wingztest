@@ -6,6 +6,10 @@ import { HomeScreen } from './screens/HomeScreen';
 import { BookingsScreen } from './screens/BookingScreen';
 import { StatusBar } from "expo-status-bar";
 
+import { Provider } from 'react-redux';
+
+import store from './src/store';
+
 const Drawer = createDrawerNavigator();
 const headerStyle = {
   headerTintColor: '#25F8BB',
@@ -14,23 +18,26 @@ const headerStyle = {
 };
 export default function App() {
 
-  return (<GestureHandlerRootView style={{ flex: 1 }}>
-    <StatusBar style="light" />
-    <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Home"
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-        screenOptions={{
-          drawerStyle: {
-            backgroundColor: '#323268',
-          },
-          drawerActiveTintColor: "#323268",
-          drawerInactiveTintColor: "#25F8BB",
-          drawerActiveBackgroundColor: '#25F8BB'
-        }}>
-        <Drawer.Screen name="Home" component={HomeScreen} options={headerStyle} />
-        <Drawer.Screen name="Bookings" component={BookingsScreen} options={headerStyle} />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  </GestureHandlerRootView>)
+  return (
+    <Provider store={store}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar style="light" />
+        <NavigationContainer>
+          <Drawer.Navigator
+            initialRouteName="Home"
+            drawerContent={(props) => <CustomDrawerContent {...props} />}
+            screenOptions={{
+              drawerStyle: {
+                backgroundColor: '#323268',
+              },
+              drawerActiveTintColor: "#323268",
+              drawerInactiveTintColor: "#25F8BB",
+              drawerActiveBackgroundColor: '#25F8BB'
+            }}>
+            <Drawer.Screen name="Home" component={HomeScreen} options={headerStyle} />
+            <Drawer.Screen name="Bookings" component={BookingsScreen} options={headerStyle} />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </Provider>)
 }
