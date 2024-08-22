@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^4.6.4",
     "@react-navigation/drawer": "^6.7.2",
     "@reduxjs/toolkit": "^2.2.7",
     "expo": "50.0.17",

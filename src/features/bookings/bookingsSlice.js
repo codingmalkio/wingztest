@@ -32,6 +32,24 @@ export const addBooking = createAsyncThunk(
   }
 );
 
+export const updateBookingStatus = createAsyncThunk(
+  'bookings/updateBookingStatus',
+  async (bookingData) => {
+    const { bookingId, status } = bookingData;
+    const response = await fetch(`${SERVER_URL}/${bookingId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ status }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update booking status');
+    }
+    return response.json();
+  }
+);
+
 export const calculateRoute = createAsyncThunk(
   'bookings/calculateRoute',
   async (routeData) => {
@@ -69,21 +87,11 @@ const bookingsSlice = createSlice({
     previewRoute: []
   },
   reducers: {
-      // requestBooking: (state, action) => {
-      //   state.bookings.push({ ...action.payload, status: 'pending' });
-      // },
     setPreviewRoute: (state, action) => {
       state.previewRoute = action.payload;
     },
     clearPreviewRoute: (state) => {
       state.previewRoute = [];
-    },
-    updateBookingStatus: (state, action) => {
-      const { bookingId, status } = action.payload;
-      const booking = state.bookings.find(b => b.id === bookingId);
-      if (booking) {
-        booking.status = status;
-      }
     }
   },
   extraReducers: (builder) => {
@@ -91,15 +99,21 @@ const bookingsSlice = createSlice({
       state.status = 'loading';
     }).addCase(fetchBookings.fulfilled, (state, action) => {
       state.status = 'succeeded';
-      state.bookings = state.bookings.concat(action.payload);
+      state.bookings = [].concat(action.payload);
+    }).addCase(updateBookingStatus.fulfilled, (state, action) => {
+      const { id, status } = action.payload;
+      let bookings = [...state.bookings];
+      const indexOfBooking = bookings.findIndex(booking => booking.id === id);
+      if (indexOfBooking !== -1) {
+        bookings[indexOfBooking].status = status;
+        state.bookings = bookings;
+      }
     }).addCase(fetchBookings.rejected, (state, action) => {
       state.status = 'failed';
       state.error = action.error.message;
     }).addCase(addBooking.fulfilled, (state, action) => {
       state.bookings.push(action.payload);
     }).addCase(calculateRoute.fulfilled, (state, action) => {
-      console.log('--- calculateRoute.fulfilled ---');
-      console.log(action.payload.features[0].geometry.coordinates)
       let previewRoute = [];
       action.payload.features[0].geometry.coordinates.forEach((coordinate) => {
         previewRoute.push({
@@ -112,6 +126,6 @@ const bookingsSlice = createSlice({
   }
 });
 
-export const { requestBooking, updateBookingStatus, clearPreviewRoute } = bookingsSlice.actions;
+export const { requestBooking, clearPreviewRoute } = bookingsSlice.actions;
 export default bookingsSlice.reducer;
 

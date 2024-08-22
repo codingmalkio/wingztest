@@ -1,31 +1,33 @@
 import { StyleSheet, Text, View, Button, TouchableOpacity, Platform } from 'react-native';
 import MapView, { AnimatedRegion, Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addBooking, fetchBookings, requestBooking, calculateRoute, clearPreviewRoute } from '../src/features/bookings/bookingsSlice';
-import Toast, {DURATION} from 'react-native-easy-toast'
+import Toast, { DURATION } from 'react-native-easy-toast'
 import { randomUUID } from 'expo-crypto';
+import { CustomBottomSheetModal } from '../ui/CustomBottomSheetModal';
+import Constants from 'expo-constants';
 
-const defaultRegion = {
-  latitude: 7.086313,
-  latitudeDelta: 0.122311,
-  longitude: 125.612855,
-  longitudeDelta: 0.066947
+const CenterPoint = () => {
+  return (<View style={styles.pointCenter}>
+    <View style={styles.innerpointCenter}></View>
+  </View>);
 }
 
-export function HomeScreen({ navigation }) {
+export function HomePassengerScreen({ navigation }) {
   const dispatch = useDispatch();
   const { bookings, status, error, previewRoute } = useSelector(state => state.bookings);
-  const [regionPoint, setRegionPoint] = useState(defaultRegion);
+  const [regionPoint, setRegionPoint] = useState(Constants.expoConfig.extra.DEFAULT_REGION);
 
+  const [sheetVisible, setSheetVisible] = useState(0);
   const [pickupLocation, setPickupLocation] = useState(null);
   const [destination, setDestination] = useState(null);
   const [isCreateToggled, setIsCreateToggled] = useState(false);
   const [selected, setSelected] = useState(null);
+  const bottomSheetModalRef = useRef(null);
 
   useEffect(() => {
     if (status === 'idle') {
-      console.log('fetching bookings')
       dispatch(fetchBookings());
     }
   }, [status, dispatch]);
@@ -43,11 +45,22 @@ export function HomeScreen({ navigation }) {
     }
   }, [pickupLocation, destination]);
 
-  const handleSaveBooking = () => {
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    setSheetVisible(1);
+    setIsCreateToggled(true)
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleSheetChanges = useCallback((index) => {
+    setSheetVisible(index)
+  }, []);
+
+  const handleCreateBooking = () => {
     const newBooking = {
       userId: randomUUID(),
-      pickupLocation: { latitude: pickupLocation.latitude, longitude: pickupLocation.longitude},
-      destination: { latitude: destination.latitude, longitude: destination.longitude},
+      pickupLocation: { latitude: pickupLocation.latitude, longitude: pickupLocation.longitude },
+      destination: { latitude: destination.latitude, longitude: destination.longitude },
       previewRoute: previewRoute,
     };
 
@@ -62,9 +75,12 @@ export function HomeScreen({ navigation }) {
     if (!marker) { // handleDeselect
       setIsCreateToggled(true);
       setSelected(null);
+      bottomSheetModalRef.current?.close()
+      setSheetVisible(-1);
       return;
     }
-    console.log(marker);
+    setSheetVisible(1);
+    bottomSheetModalRef.current?.present();
     setIsCreateToggled(false);
     setSelected(marker);
   };
@@ -77,11 +93,10 @@ export function HomeScreen({ navigation }) {
         <TouchableOpacity onPress={() => { setPickupLocation(regionPoint) }} >
           <Text style={[styles.smallText]}>SET PICKUP: {_pickupLocation}</Text>
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => { setDestination(regionPoint) }}>
           <Text style={[styles.smallText]}>SET DROPOFF: {_destination}</Text>
         </TouchableOpacity>
-        <Button disabled={!(pickupLocation && destination)} title="SAVE BOOKING" onPress={handleSaveBooking} />
+        <Button disabled={!(pickupLocation && destination)} title="SAVE BOOKING" onPress={handleCreateBooking} />
       </View>
     )
   }
@@ -90,19 +105,18 @@ export function HomeScreen({ navigation }) {
     <View>
       <Text>Preview</Text>
       <Text>{
-          (selected&&selected.pickupLocation ? JSON.stringify(selected.pickupLocation) : "") +
-          (selected&&selected.destination ? JSON.stringify(selected.destination) : "")
+        (selected && selected.pickupLocation ? JSON.stringify(selected.pickupLocation) : "") +
+        (selected && selected.destination ? JSON.stringify(selected.destination) : "")
       }</Text>
     </View>
   );
+
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 }}>
-        <View style={styles.pointCenter}>
-          <View style={styles.innerpointCenter}></View>
-        </View>
+        <CenterPoint />
         <MapView
-          initialRegion={defaultRegion}
+          initialRegion={Constants.expoConfig.extra.DEFAULT_REGION}
           onRegionChange={(region) => {
             setRegionPoint(region);
           }}
@@ -120,13 +134,12 @@ export function HomeScreen({ navigation }) {
             coordinate={marker.pickupLocation}
           />
             {marker.previewRoute && <Polyline strokeColor={'red'} coordinates={marker.previewRoute} />}
-          <Marker
-            key={"destination_"+marker.id}
-            onPress={() => handleOnMapPress(marker)}
-            coordinate={marker.destination}
-          />
+            <Marker
+              key={"destination_" + marker.id}
+              onPress={() => handleOnMapPress(marker)}
+              coordinate={marker.destination}
+            />
           </>))}
-
           {pickupLocation && <Marker
             title={'START'}
             coordinate={pickupLocation}
@@ -141,12 +154,25 @@ export function HomeScreen({ navigation }) {
         </MapView>
       </View>
 
-      <View style={styles.bottomContainer}>
-        {!isCreateToggled ? <Button onPress={() => setIsCreateToggled(true)} title={"ADD BOOKING"}></Button> : null}
+
+      <Toast ref={(toast) => this.toast = toast} position='top' />
+
+      { sheetVisible == 1 ? null : (<TouchableOpacity
+        onPress={handlePresentModalPress}
+        style={{ position: 'absolute', bottom: '15%', right: '10%', zIndex: 9999 }}
+      >
+        <View style={styles.actionButton}>
+          <Text style={{ fontSize: 24 }}>+</Text>
+        </View>
+      </TouchableOpacity>)}
+
+      <CustomBottomSheetModal
+        ref={bottomSheetModalRef}
+        handleSheetChanges={handleSheetChanges}>
         {isCreateToggled ? addBookingForm() : null}
         {selected != null ? previewSelected : null}
-      </View>
-      <Toast ref={(toast) => this.toast = toast} position='top' />
+      </CustomBottomSheetModal>
+
     </View>
   );
 }
@@ -174,7 +200,7 @@ const styles = StyleSheet.create({
     height: 16,
     width: 16,
     marginLeft: -8,
-    marginTop: -8,
+    marginTop: -17,
     backgroundColor: 'red',
     borderRadius: 8,
     borderWidth: 2,
@@ -193,4 +219,24 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  actionButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 60,
+    width: 60,
+    borderRadius: '50%',
+    backgroundColor: '#fff',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  }
 });

@@ -2,7 +2,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import CustomDrawerContent from './ui/DrawerItem';
-import { HomeScreen } from './screens/HomeScreen';
+import { HomePassengerScreen } from './screens/HomePassengerScreen';
+import { HomeDriverScreen } from './screens/HomeDriverScreen';
 import { BookingsScreen } from './screens/BookingScreen';
 import { StatusBar } from "expo-status-bar";
 
@@ -34,7 +35,8 @@ export default function App() {
               drawerInactiveTintColor: "#25F8BB",
               drawerActiveBackgroundColor: '#25F8BB'
             }}>
-            <Drawer.Screen name="Home" component={HomeScreen} options={headerStyle} />
+            <Drawer.Screen name="Home (as passenger)" component={HomePassengerScreen} options={headerStyle} />
+            <Drawer.Screen name="Home (as driver)" component={HomeDriverScreen} options={headerStyle} />
             <Drawer.Screen name="Bookings" component={BookingsScreen} options={headerStyle} />
           </Drawer.Navigator>
         </NavigationContainer>

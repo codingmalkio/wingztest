@@ -7,7 +7,13 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "extra": {
-      "OPENROUTE_APIKEY": "5b3ce3597851110001cf624821833e580ab4438e8333fe516e98ef31"
+      "OPENROUTE_APIKEY": "5b3ce3597851110001cf624821833e580ab4438e8333fe516e98ef31",
+      "DEFAULT_REGION": {
+        "latitude": 7.086313,
+        "latitudeDelta": 0.122311,
+        "longitude": 125.612855,
+        "longitudeDelta": 0.066947
+      }
     },
     "splash": {
       "image": "./assets/splash.png",
