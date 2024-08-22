@@ -6,15 +6,15 @@ const { Booking } = require('../database/model.booking');
 /* GET home page. */
 router.get('/', async function (req, res, next) {
   // ensure that the bookings is in an array and in the correct format
-  let bookings = [].concat(await Booking.findAll({ raw: true, plain: true }));
-  bookings = bookings.map(booking => {
-    return {
-      ...booking,
-      pickupLocation: JSON.parse(booking.pickupLocation),
-      destination: JSON.parse(booking.destination),
-      previewRoute: JSON.parse(booking.previewRoute)
-    }
-  });
+  let bookings = (await Booking.findAll({ limit: 100 }));
+  // bookings = bookings.map(booking => {
+  //   return {
+  //     ...booking,
+  //     pickupLocation: JSON.parse(booking.pickupLocation),
+  //     destination: JSON.parse(booking.destination),
+  //     previewRoute: JSON.parse(booking.previewRoute)
+  //   }
+  // });
   return res.json(bookings);
 });
 
@@ -41,6 +41,16 @@ router.post('/', async function (req, res, next) {
   const booking = await Booking.create(payload);
   return res.json(payload);
 });
+
+router.put('/:id', async function (req, res, next) {
+  const { id } = req.params;
+  const { status } = req.body;
+  const booking = await Booking.findOne({ where: { id } });
+  booking.status = status;
+  await booking.save();
+  return res.json(req.body);
+});
+
 
 
 module.exports = router;
