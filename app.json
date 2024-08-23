@@ -32,16 +32,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ridehail1",
-      "config": {
-        "googleMapsApiKey": "AIzaSyCq0NdAPv9_6qSTuDSutL8WLNdsC-1TfEw"
-      }
+      "bundleIdentifier": "com.ridehail1"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.wingztest"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -49,6 +47,12 @@
     "plugins": [
       "expo-router"
     ],
-    "owner": "kmuslim"
+    "owner": "kmuslim",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/147097c2-d4d1-4f8c-8ca4-b22085e8d064"
+    }
   }
 }
