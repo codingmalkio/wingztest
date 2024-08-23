@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "WingzTest",
-    "slug": "WingzTest",
+    "slug": "wingz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,6 +14,12 @@
         "latitudeDelta": 0.122311,
         "longitude": 125.612855,
         "longitudeDelta": 0.066947
+      },
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "147097c2-d4d1-4f8c-8ca4-b22085e8d064"
       }
     },
     "splash": {
@@ -42,6 +48,7 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "owner": "kmuslim"
   }
 }
