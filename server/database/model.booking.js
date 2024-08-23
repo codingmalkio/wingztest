@@ -6,16 +6,19 @@ require('dotenv').config()
 //   storage: './database.sqlite'
 // });
 
-const sequelize = new Sequelize({
+
+const sequelize = process.env.DB_LINK ? (new Sequelize(process.env.DB_LINK, {
+  dialect: 'postgres',
+  protocol: 'postgres',
+  dialectOptions: {}, //removed ssl
+})) : (new Sequelize({
   dialect: 'postgres',
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   host: process.env.DB_HOST,
-  port: 5432,
-  ssl: true,
-  clientMinMessages: 'notice',
-});
+  clientMinMessages: 'notice'
+}));
 
 // Define Booking model
 class Booking extends Model { }
