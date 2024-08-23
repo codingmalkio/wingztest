@@ -48,7 +48,7 @@ router.put('/:id', async function (req, res, next) {
   const booking = await Booking.findOne({ where: { id } });
   booking.status = status;
   await booking.save();
-  return res.json(req.body);
+  return res.json(booking);
 });
 
 
