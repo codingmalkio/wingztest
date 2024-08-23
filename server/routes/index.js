@@ -39,7 +39,7 @@ router.post('/', async function (req, res, next) {
   payload.pickupTime = null;
   payload.timestamp = Date.now();
   const booking = await Booking.create(payload);
-  return res.json(payload);
+  return res.json(booking);
 });
 
 router.put('/:id', async function (req, res, next) {
