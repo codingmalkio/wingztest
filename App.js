@@ -11,16 +11,16 @@ import { Provider } from 'react-redux';
 
 import store from './src/store';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 const Drawer = createDrawerNavigator();
 const headerStyle = {
   headerTintColor: '#25F8BB',
   drawerItemStyle: { paddingLeft: 20 },
   headerStyle: { backgroundColor: '#323268' }
 };
-
-import { LogBox } from 'react-native';
-LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-LogBox.ignoreAllLogs();//Ignore all log notifications
 
 export default function App() {
 
