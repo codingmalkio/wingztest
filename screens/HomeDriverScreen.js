@@ -1,11 +1,13 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Platform, Scrollview, Image } from 'react-native';
 import MapView, { AnimatedRegion, Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchBookings } from '../src/features/bookings/bookingsSlice';
 import Toast, { DURATION } from 'react-native-easy-toast';
 import { CustomBottomSheetModal } from '../ui/CustomBottomSheetModal';
 import Constants from 'expo-constants';
+
+import { fetchBookings, updateBookingStatus } from '../src/features/bookings/bookingsSlice';
+import PreviewSelectedThumbnail from '../ui/PreviewSelectedThumbnail';
 
 export function HomeDriverScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -14,11 +16,21 @@ export function HomeDriverScreen({ navigation }) {
   const [selected, setSelected] = useState(null);
   const bottomSheetModalRef = useRef(null);
 
+  const handleUpdateStatus = (bookingId, newStatus) => {
+    dispatch(updateBookingStatus({ bookingId, status: newStatus }));
+  };
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchBookings());
     }
   }, [status, dispatch]);
+
+  useEffect(() => {
+    console.log('bookings was updated')
+    if (selected != null) {
+      setSelected(bookings.find(booking => booking.id === selected.id))
+    }
+  }, [bookings]);
 
   const handleOnMapPress = (marker) => {
     if (!marker) { // handleDeselect
@@ -29,16 +41,6 @@ export function HomeDriverScreen({ navigation }) {
     bottomSheetModalRef.current?.present();
     setSelected(marker);
   };
-
-  const previewSelected = (
-    <View>
-      <Text style={{color: '#fff'}}>Preview</Text>
-      <Text style={{color: '#fff'}}>{
-        (selected && selected.pickupLocation ? JSON.stringify(selected.pickupLocation) : "") +
-        (selected && selected.destination ? JSON.stringify(selected.destination) : "")
-      }</Text>
-    </View>
-  );
 
   const renderMarkerAndPath = (marker, i) => {
     const isSelected = selected && selected.id === marker.id;
@@ -81,7 +83,7 @@ export function HomeDriverScreen({ navigation }) {
 
       <Toast ref={(toast) => this.toast = toast} position='top' />
       <CustomBottomSheetModal ref={bottomSheetModalRef}>
-        {selected != null ? previewSelected : null}
+          {selected != null ? <PreviewSelectedThumbnail selected={selected} handleUpdateStatus={handleUpdateStatus} showButtons={true} /> : null}
       </CustomBottomSheetModal>
     </View>
   );
@@ -122,4 +124,5 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+
 });

@@ -1,6 +1,7 @@
 import {
   BottomSheetModal,
   BottomSheetView,
+  BottomSheetScrollView,
   BottomSheetModalProvider,
   BottomSheetHandle,
 } from '@gorhom/bottom-sheet';
@@ -26,9 +27,13 @@ const CustomBottomSheetModal = React.forwardRef((props, ref) => {
           onChange={props.handleSheetChanges || null}
           handleComponent={renderHeaderHandle}
         >
-          <BottomSheetView style={styles.contentContainer}>
+          <BottomSheetScrollView
+            contentContainerStyle={styles.contentContainer}
+            style={{backgroundColor:'#404171'}}
+            horizontal={true}
+            vertical={false}>
             {props.children}
-          </BottomSheetView>
+          </BottomSheetScrollView>
         </BottomSheetModal>
       </View>
     </BottomSheetModalProvider>
@@ -48,6 +53,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#404171'
   },
   bottomSheetHandle: {

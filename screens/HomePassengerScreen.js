@@ -2,11 +2,12 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, Platform } from 'reac
 import MapView, { AnimatedRegion, Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addBooking, fetchBookings, requestBooking, calculateRoute, clearPreviewRoute } from '../src/features/bookings/bookingsSlice';
+import { addBooking, fetchBookings, updateBookingStatus, calculateRoute, clearPreviewRoute } from '../src/features/bookings/bookingsSlice';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import { randomUUID } from 'expo-crypto';
 import { CustomBottomSheetModal } from '../ui/CustomBottomSheetModal';
 import Constants from 'expo-constants';
+import PreviewSelectedThumbnail from '../ui/PreviewSelectedThumbnail';
 
 const CenterPoint = () => {
   return (<View style={styles.pointCenter}>
@@ -56,6 +57,10 @@ export function HomePassengerScreen({ navigation }) {
     setSheetVisible(index)
   }, []);
 
+  const handleUpdateStatus = (bookingId, newStatus) => {
+    dispatch(updateBookingStatus({ bookingId, status: newStatus }));
+  };
+
   const handleCreateBooking = () => {
     const newBooking = {
       userId: randomUUID(),
@@ -100,16 +105,6 @@ export function HomePassengerScreen({ navigation }) {
       </View>
     )
   }
-
-  const previewSelected = (
-    <View>
-      <Text>Preview</Text>
-      <Text>{
-        (selected && selected.pickupLocation ? JSON.stringify(selected.pickupLocation) : "") +
-        (selected && selected.destination ? JSON.stringify(selected.destination) : "")
-      }</Text>
-    </View>
-  );
 
   return (
     <View style={styles.container}>
@@ -157,7 +152,7 @@ export function HomePassengerScreen({ navigation }) {
 
       <Toast ref={(toast) => this.toast = toast} position='top' />
 
-      { sheetVisible == 1 ? null : (<TouchableOpacity
+      {sheetVisible == 1 ? null : (<TouchableOpacity
         onPress={handlePresentModalPress}
         style={{ position: 'absolute', bottom: '15%', right: '10%', zIndex: 9999 }}
       >
@@ -170,7 +165,7 @@ export function HomePassengerScreen({ navigation }) {
         ref={bottomSheetModalRef}
         handleSheetChanges={handleSheetChanges}>
         {isCreateToggled ? addBookingForm() : null}
-        {selected != null ? previewSelected : null}
+        {selected != null ? <PreviewSelectedThumbnail selected={selected} handleUpdateStatus={handleUpdateStatus} showButtons={false} /> : null}
       </CustomBottomSheetModal>
 
     </View>

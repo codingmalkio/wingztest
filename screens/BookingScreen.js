@@ -26,26 +26,22 @@ export function BookingsScreen({ navigation }) {
       <Text style={[styles.bookingText, { marginTop: 8}]}>User id: {item.userId}</Text>
       <Text style={styles.bookingText}>Driver id: {item.driverId}</Text>
       <Text style={styles.bookingText}>Status: {item.status}</Text>
-
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => handleUpdateStatus(item.id, 'pending')}>
-          <Text style={styles.buttonText}>Pending</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => handleUpdateStatus(item.id, 'accepted')}>
-          <Text style={styles.buttonText}>Accepted</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, { backgroundColor: 'orangered' }]} onPress={() => handleUpdateStatus(item.id, 'declined')}>
-          <Text style={styles.buttonText}>Declined</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => handleUpdateStatus(item.id, 'started')}>
-          <Text style={styles.buttonText}>Started</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => handleUpdateStatus(item.id, 'picked-up')}>
-          <Text style={styles.buttonText}>Picked-up</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, { backgroundColor: 'royalblue'}]} onPress={() => handleUpdateStatus(item.id, 'dropped-off')}>
-          <Text style={styles.buttonText}>Dropped-off</Text>
-        </TouchableOpacity>
+        {[
+          {label: 'Pending', statusName: 'pending'},
+          {label: 'Accepted', statusName: 'accepted'},
+          {label: 'Declined', statusName: 'declined'},
+          {label: 'Started', statusName: 'started'},
+          {label: 'Started', statusName: 'started'},
+          {label: 'Picked-up', statusName: 'picked-up'},
+          {label: 'Dropped-off', statusName: 'dropped-off'},
+        ].map((status) => {
+          const highlightedButton = item.status == status.statusName ? { backgroundColor: '#000' } : {};
+          return (<TouchableOpacity style={[styles.button, highlightedButton ]} onPress={() => handleUpdateStatus(item.id, status.statusName)}>
+            <Text style={styles.buttonText}>{status.label}</Text>
+          </TouchableOpacity>);
+        })}
+
       </View>
     </View>
   );
@@ -65,6 +61,7 @@ export function BookingsScreen({ navigation }) {
         data={bookings}
         renderItem={renderBooking}
         keyExtractor={item => item.id}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -100,17 +97,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
     marginBottom: 20,
+    paddingTop: 10
   },
   button: {
-    backgroundColor: '#333',
+    backgroundColor: '#777',
     padding: 10,
     borderRadius: 5,
     marginBottom: 2,
-    width: '100%'
+    width: '100%',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   buttonText: {
-    color: '#fff',
+    color: '#f2f2f2',
+    fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 12,
   },
   bookingText: {
     fontSize: 11

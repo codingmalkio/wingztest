@@ -102,6 +102,7 @@ const bookingsSlice = createSlice({
       state.bookings = [].concat(action.payload);
     }).addCase(updateBookingStatus.fulfilled, (state, action) => {
       const { id, status } = action.payload;
+      console.log('id', id, 'status', status);
       let bookings = [...state.bookings];
       const indexOfBooking = bookings.findIndex(booking => booking.id === id);
       if (indexOfBooking !== -1) {
