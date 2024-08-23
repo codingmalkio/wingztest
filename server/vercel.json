@@ -6,6 +6,11 @@
       "use": "@vercel/node"
     }
   ],
+  "build": {
+    "env": {
+      "NODE_POSTGRES_FORCE_NATIVE": "0"
+    }
+  },
   "routes": [
     {
       "src": "/(.*)",
