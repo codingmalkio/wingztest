@@ -1,8 +1,20 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
+require('dotenv').config()
+
+// const sequelize = new Sequelize({
+//   dialect: 'sqlite',
+//   storage: './database.sqlite'
+// });
 
 const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './database.sqlite'
+  dialect: 'postgres',
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  host: process.env.DB_HOST,
+  port: 5432,
+  ssl: true,
+  clientMinMessages: 'notice',
 });
 
 // Define Booking model
