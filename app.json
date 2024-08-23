@@ -8,6 +8,7 @@
     "userInterfaceStyle": "light",
     "extra": {
       "OPENROUTE_APIKEY": "5b3ce3597851110001cf624821833e580ab4438e8333fe516e98ef31",
+      "SERVER_URL": "https://wingztest-malkios-projects.vercel.app/api/bookings",
       "DEFAULT_REGION": {
         "latitude": 7.086313,
         "latitudeDelta": 0.122311,

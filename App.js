@@ -17,6 +17,11 @@ const headerStyle = {
   drawerItemStyle: { paddingLeft: 20 },
   headerStyle: { backgroundColor: '#323268' }
 };
+
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 export default function App() {
 
   return (

@@ -35,9 +35,9 @@ export function BookingsScreen({ navigation }) {
           {label: 'Started', statusName: 'started'},
           {label: 'Picked-up', statusName: 'picked-up'},
           {label: 'Dropped-off', statusName: 'dropped-off'},
-        ].map((status) => {
+        ].map((status, i) => {
           const highlightedButton = item.status == status.statusName ? { backgroundColor: '#000' } : {};
-          return (<TouchableOpacity style={[styles.button, highlightedButton ]} onPress={() => handleUpdateStatus(item.id, status.statusName)}>
+          return (<TouchableOpacity key={'status-'+i} style={[styles.button, highlightedButton ]} onPress={() => handleUpdateStatus(item.id, status.statusName)}>
             <Text style={styles.buttonText}>{status.label}</Text>
           </TouchableOpacity>);
         })}

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-const SERVER_URL = 'http://localhost:3000';
-const OPENROUTE_URL = 'https://api.openrouteservice.org';
 import Constants from 'expo-constants';
+const OPENROUTE_URL = 'https://api.openrouteservice.org';
+const SERVER_URL = Constants.expoConfig.extra.SERVER_URL ? Constants.expoConfig.extra.SERVER_URL : 'http://localhost:3000/bookings';
 
 // Async thunk for fetching bookings
 export const fetchBookings = createAsyncThunk(
