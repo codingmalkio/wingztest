@@ -6,6 +6,7 @@ Redux for state management.
 * Homescreen (passenger)
 * Homescreen (driver)
 * Redux store
+* Mock Express server with GET,PUT,POST routes using postgresDB https://wingztest.vercel.app/api/bookings
 
 <img style="width: 480px" src="https://codingmalkio.github.io/wingztest/images/create-booking.gif">
 
@@ -13,8 +14,8 @@ Redux for state management.
 ## Getting Started
 ### Installation of demo:
 
-* For Iphone Users Download [Expo Go on Appstore]((https://itunes.apple.com/app/apple-store/id982107779))
-* For Android Users Download [Expo Go on Google Play](https://play.google.com/store/apps/details)
+* For Iphone Users Download [Expo Go on Appstore](https://itunes.apple.com/app/apple-store/id982107779)
+* For Android Users Download [Expo Go on Google Play](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en)
 
 [<img style="width:200px;" src="https://codingmalkio.github.io/wingztest/images/appstore.png">](https://itunes.apple.com/app/apple-store/id982107779)
 [<img style="width:200px; object-fit:cover;" height="80px" src="https://codingmalkio.github.io/wingztest/images/googleplay.png">](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en)
@@ -54,6 +55,10 @@ cp .env.example ./.env
 * run the server (default port is :3333)
 ```
 npm run start
+```
+* GET
+```
+curl https://wingztest.vercel.app/api/bookings
 ```
 
 
