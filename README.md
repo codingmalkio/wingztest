@@ -1,23 +1,27 @@
 # Wingz Test
-
-A simplified ride-sharing driver mobile application using React Native that allows
-drivers to view nearby ride requests and accept or decline them. The application utilizes
+A simplified ride-sharing driver mobile application using React Native that allows drivers to view nearby ride requests and accept or decline them. The application utilizes
 Redux for state management.
-Compromises of:
+
+### Compromises of:
 * Homescreen (passenger)
 * Homescreen (driver)
 * Redux store
 
-[<img src="">]
+<img style="width: 600px" src="https://codingmalkio.github.io/wingztest/images/create-booking.gif">
 
 
 ## Getting Started
 ### Installation of demo:
-For IOS users
-* Download Expo Go on Appstore [<img src="">](https://itunes.apple.com/app/apple-store/id982107779)
-or For Android Users
-* Download Expo Go on Appstore [<img src="">](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en)
 
+* For Iphone Users Download Expo Go on Appstore
+* For Android Users Download Expo Go on Google Play
+
+[<img style="width:200px;" src="https://codingmalkio.github.io/wingztest/images/appstore.png">](https://itunes.apple.com/app/apple-store/id982107779)
+[<img style="width:200px; object-fit:cover;" height="80px" src="https://codingmalkio.github.io/wingztest/images/googleplay.png">](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en)
+
+* Then scan this QR code using the camera app
+
+<img style="width:250px;" src="https://codingmalkio.github.io/wingztest/images/qr.png">
 
 
 ## Dependencies
