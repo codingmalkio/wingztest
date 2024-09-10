@@ -32,6 +32,14 @@ export function HomeDriverScreen({ navigation }) {
     }
   }, [bookings]);
 
+
+  useEffect(() => {
+    if(!bookings.length && status != 'idle'){
+      this.toast.show('No bookings found', 2000, () => { });
+    }
+  }, [bookings]);
+
+
   const handleOnMapPress = (marker) => {
     if (!marker) { // handleDeselect
       setSelected(null);

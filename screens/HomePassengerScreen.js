@@ -46,6 +46,12 @@ export function HomePassengerScreen({ navigation }) {
     }
   }, [pickupLocation, destination]);
 
+  useEffect(() => {
+    if(!bookings.length && status != 'idle'){
+      this.toast.show('No bookings found', 2000, () => { });
+    }
+  }, [bookings]);
+
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     setSheetVisible(1);

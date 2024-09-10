@@ -32,7 +32,6 @@ export function BookingsScreen({ navigation }) {
           {label: 'Accepted', statusName: 'accepted'},
           {label: 'Declined', statusName: 'declined'},
           {label: 'Started', statusName: 'started'},
-          {label: 'Started', statusName: 'started'},
           {label: 'Picked-up', statusName: 'picked-up'},
           {label: 'Dropped-off', statusName: 'dropped-off'},
         ].map((status, i) => {
